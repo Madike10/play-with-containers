@@ -182,3 +182,15 @@ Il existe 3 types de reseaux docker :
 
 Compose est un outil permettant de definir et d'executer des applications docker a conteneur multiples.
 
+***Acceder au conteneur***
+```bash
+        docker exec -it conteneur_name_or_id sh   ## to acces in shell 
+```
+### volumes
+
+c'est un repertoire partager dans l'hote, visible depuis certains ou tous les conteneurs.
+
+### Networks
+
+Ils definissent les regles de communication entre les conteneurs et les conteneur de l'hote
+Ils permet au services des conteneurs d'etre decouverts les uns par les autres
