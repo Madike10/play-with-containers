@@ -1,0 +1,4 @@
+### Inventory db 
+
+FROM postgres:16-alpine
+
