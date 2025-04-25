@@ -7,8 +7,6 @@ interface MovieAttributes {
     id: number;
     title: string;
     description: string;
-    createdAt?: Date;
-    updatedAt?: Date;
 }
 
 // Interface définissant les attributs optionnels pour la création
@@ -19,8 +17,6 @@ class Movie extends Model<MovieAttributes, MovieCreationAttributes> implements M
     public id!: number;
     public title!: string;
     public description!: string;
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
 }
 
 // Initialisation du modèle Movie
@@ -38,16 +34,6 @@ Movie.init(
         description: {
             type: DataTypes.TEXT,
             allowNull: true,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            defaultValue: DataTypes.NOW,
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            defaultValue: DataTypes.NOW,
         },
     },
     {
