@@ -163,7 +163,7 @@ software that packages code and dependencies, so the application runs quickly an
 
 ```bash
         docker network ls   # Pour lister la liste des networks qui existe
-        docker network create --dirver brideg --subnet  172.17.0.0/16 {Nom du network}  # Pour cree un nouveau network
+        docker network create --driver bridge --subnet  172.17.0.0/16 {Nom du network}  # Pour cree un nouveau network
         docker network inspect nom_du_reseau  # Pour voir les info d'un reseau cree
 ```
 
@@ -194,3 +194,13 @@ c'est un repertoire partager dans l'hote, visible depuis certains ou tous les co
 
 Ils definissent les regles de communication entre les conteneurs et les conteneur de l'hote
 Ils permet au services des conteneurs d'etre decouverts les uns par les autres
+
+### TEST AVEC DOCKER COMPOSE
+
+L'application demarre sous docker avec les commandes suivant :
+
+```bash
+    docker compose up -build  ### Si le build n'est pas encore faite 
+    docker compose up         ### Si les images existe deja
+
+```
