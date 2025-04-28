@@ -5,6 +5,7 @@ services:
     container_name: api-gateway
     build:
       context: ./srcs/api-gateway
+    image: api-gateway-app  
     environment:
       - API_GATEWAY_PORT=${API_GATEWAY_PORT}
       - RABBITMQ_URL=${RABBITMQ_URL}
@@ -16,7 +17,8 @@ services:
     volumes:
       - api-gateway-app:/app/logs
     networks:
-      - app-network  
+      app-network:
+       ipv4_address: 11.11.90.242 
     depends_on:
       inventory-app:
         condition: service_started
@@ -31,16 +33,20 @@ services:
     container_name: inventory-app
     build:
       context: ./srcs/inventory-app
+    image: inventory-app  
     environment:
       - INVENTORY_DB_HOST=${INVENTORY_DB_HOST}
       - INVENTORY_DB_USER=${INVENTORY_DB_USER}
       - INVENTORY_DB_PASSWORD=${INVENTORY_DB_PASSWORD}
       - INVENTORY_DB_NAME=${INVENTORY_DB_NAME}
       - INVENTORY_PORT=${INVENTORY_PORT}
-    ports:
-      - "${INVENTORY_PORT}:${INVENTORY_PORT}"
+    # ports:
+    #   - "${INVENTORY_PORT}:${INVENTORY_PORT}"
     networks:
-      - app-network  
+      app-network:
+       ipv4_address: 11.11.90.243
+    expose:
+      - "${INVENTORY_PORT}"    
     depends_on:
       inventory-db:
         condition: service_healthy
@@ -50,14 +56,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.inventory-db
+    image: inventory-database  
     environment:
       POSTGRES_USER: ${INVENTORY_DB_USER}
       POSTGRES_PASSWORD: ${INVENTORY_DB_PASSWORD}
-      POSTGRES_DB: ${INVENTORY_DB_NAME}
+      POSTGRES_DB: ${INVENTORY_DB_NAME} 
     volumes:
       - inventory-db-data:/var/lib/postgresql/data
     networks:
-      - app-network  
+      app-network:
+       ipv4_address: 11.11.90.244
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${INVENTORY_DB_USER} -d ${INVENTORY_DB_NAME}"]
       interval: 5s
@@ -71,6 +79,7 @@ services:
     container_name: billing-app
     build:
       context: ./srcs/billing-app
+    image: billing-app  
     environment:
       - BILLING_PORT=${BILLING_PORT}
       - BILLING_DB_USER=${BILLING_DB_USER}
@@ -79,10 +88,14 @@ services:
       - BILLING_DB_NAME=${BILLING_DB_NAME}
       - BILLING_RABBITMQ_URL=${BILLING_RABBITMQ_URL}
       - BILLING_QUEUE_NAME=${BILLING_QUEUE_NAME}
-    ports:
-      - "${BILLING_PORT}:${BILLING_PORT}"
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+    # ports:
+    #   - "${BILLING_PORT}:${BILLING_PORT}"
+    expose:
+      - "${BILLING_PORT}"
     networks:
-      - app-network  
+      app-network:
+       ipv4_address: 11.11.90.245 
     depends_on:
       billing-db:
         condition: service_started
@@ -98,21 +111,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.billing-db
+    image: billing-database  
     environment:
       POSTGRES_USER: ${BILLING_DB_USER}
       POSTGRES_PASSWORD: ${BILLING_DB_PASSWORD}
-      POSTGRES_DB: ${BILLING_DB_NAME}
+      POSTGRES_DB: ${BILLING_DB_NAME} 
     volumes:
       - billing-db-data:/var/lib/postgresql/data # Volume pour persister les données  
     networks:
-      - app-network  
+      app-network:
+       ipv4_address: 11.11.90.246
     restart: on-failure     
 
 ### =============== RABBITMQ SERVICE =============== ###
 
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:4.0.7-management
+    image: rabbitmq:4.0.7-alpine
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
       interval: 5s
@@ -120,6 +135,11 @@ services:
       retries: 5
       start_period: 10s
     restart: on-failure  
+    networks:
+      app-network:
+       ipv4_address: 11.11.90.247
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
 volumes:
   billing-db-data:
   inventory-db-data:
@@ -127,4 +147,9 @@ volumes:
 networks:
   app-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 11.11.90.0/24
+          gateway: 11.11.90.1
+
      
