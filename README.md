@@ -195,6 +195,37 @@ c'est un repertoire partager dans l'hote, visible depuis certains ou tous les co
 Ils definissent les regles de communication entre les conteneurs et les conteneur de l'hote
 Ils permet au services des conteneurs d'etre decouverts les uns par les autres
 
+### DEPENDENCES
+
+Vous avez besoin des outils suivants pour le bon fonctionnement des teste :
+
+***DOCKER***
+
+https://blog.stephane-robert.info/docs/conteneurs/moteurs-conteneurs/docker/
+```bash
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+    sudo usermod -aG docker ${USER}
+```
+***DOCKER COMPOSE***
+
+https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/docker-compose/#installation-de-docker-compose
+
+```bash
+    sudo apt update
+    sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### CONFIGURATIONS
+
+ Acceder au projet play-with-container en local avec la commandes suivant:
+
+    ```bash
+    git clone https://learn.zone01dakar.sn/git/ymadike/play-with-containers.
+    ```
+Deplacer dans le ficher de travail et suiver les instruction dans test avec docker compose.
+
 ### TEST AVEC DOCKER COMPOSE
 
 L'application demarre sous docker avec les commandes suivant :
@@ -202,5 +233,6 @@ L'application demarre sous docker avec les commandes suivant :
 ```bash
     docker compose up -build  ### Si le build n'est pas encore faite 
     docker compose up         ### Si les images existe deja
+    docker exec -it billing-db psql -U postgres # Pour acceder au database billing 
 
 ```

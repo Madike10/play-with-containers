@@ -13,15 +13,15 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         total_amount INTEGER NOT NULL
     );
 
-    -- Ajouter des données initiales si nécessaire
-    INSERT INTO orders (user_id, numbers_of_items, total_amount) VALUES
-        ('user123', 5, 1000)
-    ON CONFLICT DO NOTHING;
-
-    INSERT INTO orders (user_id, numbers_of_items, total_amount) VALUES
-        ('user456', 2, 500)
-    ON CONFLICT DO NOTHING;
 EOSQL
+    # -- Ajouter des données initiales si nécessaire
+    # INSERT INTO orders (user_id, numbers_of_items, total_amount) VALUES
+    #     ('user123', 5, 1000)
+    # ON CONFLICT DO NOTHING;
+
+    # INSERT INTO orders (user_id, numbers_of_items, total_amount) VALUES
+    #     ('user456', 2, 500)
+    # ON CONFLICT DO NOTHING;
 
 echo "Table orders créée avec succès."
 
