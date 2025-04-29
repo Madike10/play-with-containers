@@ -50,6 +50,7 @@ services:
     depends_on:
       inventory-db:
         condition: service_healthy
+    restart: on-failure    
 ### ========== INVENTORY DATABASE SERVICE ========== ###
   inventory-db:
     container_name: inventory-db

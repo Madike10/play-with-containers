@@ -1,6 +1,4 @@
 # Use the official RabbitMQ image as the base image
 FROM rabbitmq:4.0.7-alpine
-# Set the environment variable for RabbitMQ
-
 
 CMD ["rabbitmq-server"]
