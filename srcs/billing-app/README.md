@@ -4,6 +4,22 @@
 
 RabbitMQ is a reliable and mature message broker and streaming platform that is easy to deploy in cloud environments, on-premises, or on your local machine. It is currently used by millions of people worldwide.
 
+### notions rabbitmq
+
+Broker : serveur portant une instance rabbitmq au sein d’un cluster (ensemble de brokers)
+
+Consumer : consommateur de messages après connexion à une queue
+
+Messages : ordonnés ou non, sont composés de metadatas et de données
+
+Channel : élément permettant la connexion des producteurs pour recueillir les messages. Permet de gérer les connexions par multiplexage (plusieurs connexions en une).
+
+Exchange : recueille les messgaes de producteur et a la charge de les router suivant le type d”exchange et de binding. C’est le coeur de l’intelligence de la répartition des messages entrant vers les queues rabbitmq.
+
+Binding : connexion d’un exchange avec une queue.
+
+Queue : ensemble de message avec plus ou moins de haute disponibilité. 
+
 ### Message Broker Workflow
 ```
 Producer ---> Broker ---> Queue ---> Consumer
